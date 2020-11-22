@@ -15,7 +15,7 @@ namespace Shop.UI.Controllers
     {
         private ApplicationDbContext _ctx;
 
-        public AdminController(ApplicationDbContext ctx)
+        public AdminController (ApplicationDbContext ctx)
         {
             _ctx = ctx;
         }
@@ -23,16 +23,16 @@ namespace Shop.UI.Controllers
         [HttpGet("products")]
         public IActionResult GetProducts() => Ok(new GetProducts(_ctx).Do());
 
-        [HttpGet("products/{id}")] 
+        [HttpGet("product/{id}")] 
         public IActionResult GetProduct(int id) => Ok(new GetProduct(_ctx).Do(id));
 
         [HttpPost("products")]
-        public IActionResult CreateProduct(CreateProduct.ProductViewModel vm) => Ok(new CreateProduct(_ctx).Do(vm));
+        public async Task<IActionResult> CreateProduct([FromBody]CreateProduct.Request request) => Ok((await new CreateProduct(_ctx).Do(request)));
 
-        [HttpDelete("products/{id}")]
-        public IActionResult DeleteProduct(int id) => Ok(new DeleteProducts(_ctx).Do(id));
+        [HttpDelete("product/{id}")]
+        public async Task<IActionResult> DeleteProduct(int id) => Ok((await new DeleteProducts(_ctx).Do(id)));
 
-        [HttpPut("products")]
-        public IActionResult UpdateProduct(UpdateProduct.ProductViewModel vm) => Ok(new UpdateProduct(_ctx).Do(vm));
+        [HttpPut("productup")]
+        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProduct.Request request) => Ok(await new UpdateProduct(_ctx).Do(request));
     }
 }
